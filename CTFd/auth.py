@@ -186,9 +186,13 @@ def register():
         name = request.form.get("name", "").strip()
         email_address = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "").strip()
+        # fname = request.form.get("fname", "").strip()
+        # lname = request.form.get("lname", "").strip()
+        affiliation = request.form.get("school", "").strip()
 
         name_len = len(name) == 0
-        names = Users.query.add_columns("name", "id").filter_by(name=name).first()
+        names = Users.query.add_columns(
+            "name", "id").filter_by(name=name).first()
         emails = (
             Users.query.add_columns("email", "id")
             .filter_by(email=email_address)
@@ -219,6 +223,12 @@ def register():
             errors.append("Pick a shorter password")
         if name_len:
             errors.append("Pick a longer user name")
+        # if len(fname) == 0:
+        #     errors.append("You must enter your first name.")
+        # if len(lname) == 0:
+        #     errors.append("You must enter your last name.")
+        if len(affiliation) == 0:
+            errors.append("You must enter your school.")
 
         if len(errors) > 0:
             return render_template(
@@ -227,10 +237,14 @@ def register():
                 name=request.form["name"],
                 email=request.form["email"],
                 password=request.form["password"],
+                # fname=request.form["fname"],
+                # lname=request.form["lname"],
+                affiliation=request.form["affiliation"]
             )
         else:
             with app.app_context():
-                user = Users(name=name, email=email_address, password=password)
+                user = Users(name=name, email=email_address,
+                             password=password, affiliation=affiliation)
                 db.session.add(user)
                 db.session.commit()
                 db.session.flush()
@@ -293,13 +307,15 @@ def login():
 
             else:
                 # This user exists but the password is wrong
-                log("logins", "[{date}] {ip} - submitted invalid password for {name}")
+                log("logins",
+                    "[{date}] {ip} - submitted invalid password for {name}")
                 errors.append("Your username or password is incorrect")
                 db.session.close()
                 return render_template("login.html", errors=errors)
         else:
             # This user just doesn't exist
-            log("logins", "[{date}] {ip} - submitted invalid account information")
+            log("logins",
+                "[{date}] {ip} - submitted invalid account information")
             errors.append("Your username or password is incorrect")
             db.session.close()
             return render_template("login.html", errors=errors)
@@ -321,7 +337,8 @@ def oauth_login():
     else:
         scope = "profile"
 
-    client_id = get_app_config("OAUTH_CLIENT_ID") or get_config("oauth_client_id")
+    client_id = get_app_config(
+        "OAUTH_CLIENT_ID") or get_config("oauth_client_id")
 
     if client_id is None:
         error_for(
@@ -344,7 +361,8 @@ def oauth_redirect():
     state = request.args.get("state")
     if session["nonce"] != state:
         log("logins", "[{date}] {ip} - OAuth State validation mismatch")
-        error_for(endpoint="auth.login", message="OAuth State validation mismatch.")
+        error_for(endpoint="auth.login",
+                  message="OAuth State validation mismatch.")
         return redirect(url_for("auth.login"))
 
     if oauth_code:
@@ -354,7 +372,8 @@ def oauth_redirect():
             or "https://auth.majorleaguecyber.org/oauth/token"
         )
 
-        client_id = get_app_config("OAUTH_CLIENT_ID") or get_config("oauth_client_id")
+        client_id = get_app_config(
+            "OAUTH_CLIENT_ID") or get_config("oauth_client_id")
         client_secret = get_app_config("OAUTH_CLIENT_SECRET") or get_config(
             "oauth_client_secret"
         )
@@ -398,7 +417,8 @@ def oauth_redirect():
                     db.session.add(user)
                     db.session.commit()
                 else:
-                    log("logins", "[{date}] {ip} - Public registration via MLC blocked")
+                    log("logins",
+                        "[{date}] {ip} - Public registration via MLC blocked")
                     error_for(
                         endpoint="auth.login",
                         message="Public registration is disabled. Please try again later.",
@@ -411,7 +431,8 @@ def oauth_redirect():
 
                 team = Teams.query.filter_by(oauth_id=team_id).first()
                 if team is None:
-                    team = Teams(name=team_name, oauth_id=team_id, captain_id=user.id)
+                    team = Teams(name=team_name, oauth_id=team_id,
+                                 captain_id=user.id)
                     db.session.add(team)
                     db.session.commit()
                     clear_team_session(team_id=team.id)
@@ -439,7 +460,8 @@ def oauth_redirect():
             return redirect(url_for("challenges.listing"))
         else:
             log("logins", "[{date}] {ip} - OAuth token retrieval failure")
-            error_for(endpoint="auth.login", message="OAuth token retrieval failure.")
+            error_for(endpoint="auth.login",
+                      message="OAuth token retrieval failure.")
             return redirect(url_for("auth.login"))
     else:
         log("logins", "[{date}] {ip} - Received redirect without OAuth code")
