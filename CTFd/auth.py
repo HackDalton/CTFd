@@ -186,8 +186,8 @@ def register():
         name = request.form.get("name", "").strip()
         email_address = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "").strip()
-        # fname = request.form.get("fname", "").strip()
-        # lname = request.form.get("lname", "").strip()
+        fname = request.form.get("fname", "").strip()
+        lname = request.form.get("lname", "").strip()
         affiliation = request.form.get("school", "").strip()
 
         name_len = len(name) == 0
@@ -223,10 +223,10 @@ def register():
             errors.append("Pick a shorter password")
         if name_len:
             errors.append("Pick a longer user name")
-        # if len(fname) == 0:
-        #     errors.append("You must enter your first name.")
-        # if len(lname) == 0:
-        #     errors.append("You must enter your last name.")
+        if len(fname) == 0:
+            errors.append("You must enter your first name.")
+        if len(lname) == 0:
+            errors.append("You must enter your last name.")
         if len(affiliation) == 0:
             errors.append("You must enter your school.")
 
@@ -237,14 +237,14 @@ def register():
                 name=request.form["name"],
                 email=request.form["email"],
                 password=request.form["password"],
-                # fname=request.form["fname"],
-                # lname=request.form["lname"],
-                affiliation=request.form["affiliation"]
+                fname=request.form["fname"],
+                lname=request.form["lname"],
+                affiliation=request.form["school"]
             )
         else:
             with app.app_context():
                 user = Users(name=name, email=email_address,
-                             password=password, affiliation=affiliation)
+                             password=password, affiliation=affiliation, fname=request.form["fname"], lname=request.form["lname"])
                 db.session.add(user)
                 db.session.commit()
                 db.session.flush()

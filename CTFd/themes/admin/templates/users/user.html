@@ -70,82 +70,87 @@
 
 <div class="jumbotron">
 	<div class="container">
-		<h1 id="team-id" class="text-center p-0 m-0">{{ user.name }}</h1>
+		<h1 id="team-id" class="text-center p-0 m-0">{{user.fname}} {{user.lname}} ({{ user.name }})</h1>
 		<div class="mb-2">
 			{% if user.type == 'admin' %}
-				<span class="badge badge-primary">admin</span>
+			<span class="badge badge-primary">admin</span>
 			{% endif %}
 			{% if user.verified %}
-				<span class="badge badge-success">verified</span>
+			<span class="badge badge-success">verified</span>
 			{% endif %}
 			{% if user.hidden %}
-				<span class="badge badge-danger">hidden</span>
+			<span class="badge badge-danger">hidden</span>
 			{% endif %}
 			{% if user.banned %}
-				<span class="badge badge-danger">banned</span>
+			<span class="badge badge-danger">banned</span>
 			{% endif %}
 		</div>
 
-			{% if user.affiliation %}
-				<h3 class="d-inline-block">
-					<span class="badge badge-primary">{{ user.affiliation }}</span>
-				</h3>
-			{% endif %}
+		{% if user.affiliation %}
+		<h3 class="d-inline-block">
+			<span class="badge badge-primary">{{ user.affiliation }}</span>
+		</h3>
+		{% endif %}
 
-			{% if user.country %}
-				<h3 class="d-inline-block">
-					<span class="badge badge-primary">
-						<i class="flag-{{ user.country.lower() }}"></i>
-						{{ lookup_country_code(user.country) }}
-					</span>
-				</h3>
-			{% endif %}
+		{% if user.country %}
+		<h3 class="d-inline-block">
+			<span class="badge badge-primary">
+				<i class="flag-{{ user.country.lower() }}"></i>
+				{{ lookup_country_code(user.country) }}
+			</span>
+		</h3>
+		{% endif %}
 
 		<h2 id="team-email" class="text-center">{{ user.email }}</h2>
 		{% if user.oauth_id %}
-			<a href="https://majorleaguecyber.org/u/{{ user.name }}">
-				<h3><span class="badge badge-primary">Official</span></h3>
-			</a>
+		<a href="https://majorleaguecyber.org/u/{{ user.name }}">
+			<h3><span class="badge badge-primary">Official</span></h3>
+		</a>
 		{% endif %}
 
 		{% if user.team_id %}
-			<h2 id="team-acc" class="text-center">
-				<a href="{{ url_for('admin.teams_detail', team_id=user.team_id) }}">
-					{{ user.team.name }}
-				</a>
-			</h2>
+		<h2 id="team-acc" class="text-center">
+			<a href="{{ url_for('admin.teams_detail', team_id=user.team_id) }}">
+				{{ user.team.name }}
+			</a>
+		</h2>
 		{% endif %}
 
 		<h3 id="team-place" class="text-center">
 			{% if place %}
-				{{ place }}
-				<small>place</small>
+			{{ place }}
+			<small>place</small>
 			{% endif %}
 		</h3>
 		<h3 id="team-score" class="text-center">
 			{% if score %}
-				{{ score }}
-				<small>points</small>
+			{{ score }}
+			<small>points</small>
 			{% endif %}
 		</h3>
 		<hr class="w-50">
 		<div class="pt-3">
 			<a class="edit-user text-dark">
-				<i class="btn-fa fas fa-user-edit fa-2x px-2" data-toggle="tooltip" data-placement="top" title="Edit User"></i>
+				<i class="btn-fa fas fa-user-edit fa-2x px-2" data-toggle="tooltip" data-placement="top"
+					title="Edit User"></i>
 			</a>
 			<a class="award-user text-dark">
-				<i class="btn-fa fas fa-trophy fa-2x px-2" data-toggle="tooltip" data-placement="top" title="Award User"></i>
+				<i class="btn-fa fas fa-trophy fa-2x px-2" data-toggle="tooltip" data-placement="top"
+					title="Award User"></i>
 			</a>
 			<a class="email-user text-dark">
-				<i class="btn-fa fas fa-envelope fa-2x px-2" data-toggle="tooltip" data-placement="top" title="Email User"></i>
+				<i class="btn-fa fas fa-envelope fa-2x px-2" data-toggle="tooltip" data-placement="top"
+					title="Email User"></i>
 			</a>
 			<a class="delete-user text-dark">
-				<i class="btn-fa fas fa-trash-alt fa-2x px-2" data-toggle="tooltip" data-placement="top" title="Delete User"></i>
+				<i class="btn-fa fas fa-trash-alt fa-2x px-2" data-toggle="tooltip" data-placement="top"
+					title="Delete User"></i>
 			</a>
 		</div>
 		<div class="pt-3">
 			<a class="addresses-user text-dark">
-				<i class="btn-fa fas fa-network-wired fa-2x px-2" data-toggle="tooltip" data-placement="top" title="IP Addresses"></i>
+				<i class="btn-fa fas fa-network-wired fa-2x px-2" data-toggle="tooltip" data-placement="top"
+					title="IP Addresses"></i>
 			</a>
 			{% if user.website %}
 			<a href="{{ user.website }}" target="_blank" class="text-decoration-none text-dark">
@@ -160,39 +165,39 @@
 <div class="container">
 	<div class="row min-vh-25">
 		{% if solves %}
-			<div id="keys-pie-graph" class="col-md-6">
-				<div class="text-center">
-					<i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
-				</div>
+		<div id="keys-pie-graph" class="col-md-6">
+			<div class="text-center">
+				<i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
 			</div>
-			<div id="categories-pie-graph" class="col-md-6">
-				<div class="text-center">
-					<i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
-				</div>
+		</div>
+		<div id="categories-pie-graph" class="col-md-6">
+			<div class="text-center">
+				<i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
 			</div>
-			<div id="score-graph" class="col-md-12">
-				<div class="text-center">
-					<i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
-				</div>
+		</div>
+		<div id="score-graph" class="col-md-12">
+			<div class="text-center">
+				<i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
 			</div>
+		</div>
 		{% else %}
-			<h3 class="opacity-50 text-center w-100 justify-content-center align-self-center">No solves yet</h3>
+		<h3 class="opacity-50 text-center w-100 justify-content-center align-self-center">No solves yet</h3>
 		{% endif %}
 	</div>
 
 
 	<nav class="nav nav-tabs nav-fill pt-5" id="myTab" role="tablist">
 		<a class="nav-item nav-link active" id="nav-solves-tab" data-toggle="tab" href="#nav-solves" role="tab"
-		   aria-controls="nav-solves" aria-selected="true">Solves</a>
+			aria-controls="nav-solves" aria-selected="true">Solves</a>
 
 		<a class="nav-item nav-link" id="nav-wrong-tab" data-toggle="tab" href="#nav-wrong" role="tab"
-		   aria-controls="nav-wrong" aria-selected="false">Fails</a>
+			aria-controls="nav-wrong" aria-selected="false">Fails</a>
 
 		<a class="nav-item nav-link" id="nav-awards-tab" data-toggle="tab" href="#nav-awards" role="tab"
-		   aria-controls="nav-awards" aria-selected="false">Awards</a>
+			aria-controls="nav-awards" aria-selected="false">Awards</a>
 
 		<a class="nav-item nav-link" id="nav-missing-tab" data-toggle="tab" href="#nav-missing" role="tab"
-		   aria-controls="nav-missing" aria-selected="false">Missing</a>
+			aria-controls="nav-missing" aria-selected="false">Missing</a>
 	</nav>
 
 	<div class="tab-content min-vh-50" id="nav-tabContent">
@@ -212,45 +217,48 @@
 			<div class="row">
 				<div class="col-md-12">
 					<table class="table table-striped border">
-					<thead>
-						<tr>
-							<th class="border-right" data-checkbox>
-								<div class="form-check text-center">
-									<input type="checkbox" class="form-check-input" data-checkbox-all>&nbsp;
-								</div>
-							</th>
-							<th class="sort-col text-center"><b>Challenge</b></th>
-							<th class="sort-col text-center"><b>Submitted</b></th>
-							<th class="sort-col text-center"><b>Category</b></th>
-							<th class="sort-col text-center"><b>Value</b></th>
-							<th class="sort-col text-center"><b>Time</b></th>
-						</tr>
-					</thead>
-					<tbody>
-					{% for solve in solves %}
-						<tr class="chal-solve" data-href="{{ url_for("admin.challenges_detail", challenge_id=solve.challenge_id) }}">
-							<td class="border-right" data-checkbox>
-								<div class="form-check text-center">
-									<input type="checkbox" class="form-check-input" value="{{ solve.id }}" data-submission-id="{{ solve.id }}"
-									data-submission-type="{{ solve.type }}"
-									data-submission-challenge="{{ solve.challenge.name }}">&nbsp;
-								</div>
-							</td>
-							<td class="text-center chal" id="{{ solve.challenge_id }}">
-								<a href="{{ url_for("admin.challenges_detail", challenge_id=solve.challenge_id) }}">
-									{{ solve.challenge.name }}
-								</a>
-							</td>
-							<td class="flag" id="{{ solve.id }}"><pre>{{ solve.provided }}</pre></td>
-							<td class="text-center">{{ solve.challenge.category }}</td>
-							<td class="text-center">{{ solve.challenge.value }}</td>
-							<td class="text-center solve-time">
-								<span data-time="{{ solve.date | isoformat }}"></span>
-							</td>
-						</tr>
-					{% endfor %}
-					</tbody>
-				</table>
+						<thead>
+							<tr>
+								<th class="border-right" data-checkbox>
+									<div class="form-check text-center">
+										<input type="checkbox" class="form-check-input" data-checkbox-all>&nbsp;
+									</div>
+								</th>
+								<th class="sort-col text-center"><b>Challenge</b></th>
+								<th class="sort-col text-center"><b>Submitted</b></th>
+								<th class="sort-col text-center"><b>Category</b></th>
+								<th class="sort-col text-center"><b>Value</b></th>
+								<th class="sort-col text-center"><b>Time</b></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for solve in solves %}
+							<tr class="chal-solve"
+								data-href="{{ url_for("admin.challenges_detail", challenge_id=solve.challenge_id) }}">
+								<td class="border-right" data-checkbox>
+									<div class="form-check text-center">
+										<input type="checkbox" class="form-check-input" value="{{ solve.id }}"
+											data-submission-id="{{ solve.id }}" data-submission-type="{{ solve.type }}"
+											data-submission-challenge="{{ solve.challenge.name }}">&nbsp;
+									</div>
+								</td>
+								<td class="text-center chal" id="{{ solve.challenge_id }}">
+									<a href="{{ url_for("admin.challenges_detail", challenge_id=solve.challenge_id) }}">
+										{{ solve.challenge.name }}
+									</a>
+								</td>
+								<td class="flag" id="{{ solve.id }}">
+									<pre>{{ solve.provided }}</pre>
+								</td>
+								<td class="text-center">{{ solve.challenge.category }}</td>
+								<td class="text-center">{{ solve.challenge.value }}</td>
+								<td class="text-center solve-time">
+									<span data-time="{{ solve.date | isoformat }}"></span>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -284,13 +292,14 @@
 							</tr>
 						</thead>
 						<tbody>
-						{% for fail in fails %}
-							<tr class="chal-wrong" data-href="{{ url_for("admin.challenges_detail", challenge_id=fail.challenge_id) }}">
+							{% for fail in fails %}
+							<tr class="chal-wrong"
+								data-href="{{ url_for("admin.challenges_detail", challenge_id=fail.challenge_id) }}">
 								<td class="border-right" data-checkbox>
 									<div class="form-check text-center">
-										<input type="checkbox" class="form-check-input" value="{{ fail.id }}" data-submission-id="{{ fail.id }}"
-										data-submission-type="{{ fail.type }}"
-										data-submission-challenge="{{ fail.challenge.name }}">&nbsp;
+										<input type="checkbox" class="form-check-input" value="{{ fail.id }}"
+											data-submission-id="{{ fail.id }}" data-submission-type="{{ fail.type }}"
+											data-submission-challenge="{{ fail.challenge.name }}">&nbsp;
 									</div>
 								</td>
 								<td class="text-center chal" id="{{ fail.challenge_id }}">
@@ -305,7 +314,7 @@
 									<span data-time="{{ fail.date | isoformat }}"></span>
 								</td>
 							</tr>
-						{% endfor %}
+							{% endfor %}
 						</tbody>
 					</table>
 				</div>
@@ -344,23 +353,27 @@
 							</tr>
 						</thead>
 						<tbody id="awards-body">
-						{% for award in awards %}
+							{% for award in awards %}
 							<tr class="award-row">
 								<td class="border-right" data-checkbox>
 									<div class="form-check text-center">
-										<input type="checkbox" class="form-check-input" value="{{ award.id }}" data-award-id="{{ award.id }}" data-award-name="{{ award.name }}">&nbsp;
+										<input type="checkbox" class="form-check-input" value="{{ award.id }}"
+											data-award-id="{{ award.id }}" data-award-name="{{ award.name }}">&nbsp;
 									</div>
 								</td>
 								<td class="text-center chal" id="{{ award.id }}">{{ award.name }}</td>
-								<td class=""><pre>{{ award.description }}</pre></td>
+								<td class="">
+									<pre>{{ award.description }}</pre>
+								</td>
 								<td class="text-center solve-time">
 									<span data-time="{{ award.date | isoformat }}"></span>
 								</td>
 								<td class="text-center">{{ award.value }}</td>
 								<td class="text-center">{{ award.category }}</td>
-								<td class="text-center"> <i class="award-icon award-{{ award.icon }}"></i> {{ award.icon }}</td>
+								<td class="text-center"> <i class="award-icon award-{{ award.icon }}"></i>
+									{{ award.icon }}</td>
 							</tr>
-						{% endfor %}
+							{% endfor %}
 						</tbody>
 					</table>
 				</div>
@@ -383,38 +396,40 @@
 			<div class="row">
 				<div class="col-md-12">
 					<table class="table table-striped border">
-					<thead>
-						<tr>
-							<th class="border-right" data-checkbox>
-								<div class="form-check text-center">
-									<input type="checkbox" class="form-check-input" data-checkbox-all>&nbsp;
-								</div>
-							</th>
-							<th class="sort-col text-center"><b>Challenge</b></th>
-							<th class="sort-col text-center"><b>Category</b></th>
-							<th class="sort-col text-center"><b>Value</b></th>
-						</tr>
-					</thead>
-					<tbody>
-					{% for challenge in missing %}
-						<tr class="chal-solve" data-href="{{ url_for("admin.challenges_detail", challenge_id=challenge.id) }}">
-							<td class="border-right" data-checkbox>
-								<div class="form-check text-center">
-									<input type="checkbox" class="form-check-input" value="{{ challenge.id }}" data-missing-challenge-id="{{ challenge.id }}"
-									data-missing-challenge-name="{{ challenge.name }}">&nbsp;
-								</div>
-							</td>
-							<td class="text-center chal" id="{{ challenge.id }}">
-								<a href="{{ url_for("admin.challenges_detail", challenge_id=challenge.id) }}">
-									{{ challenge.name }}
-								</a>
-							</td>
-							<td class="text-center">{{ challenge.category }}</td>
-							<td class="text-center">{{ challenge.value }}</td>
-						</tr>
-					{% endfor %}
-					</tbody>
-				</table>
+						<thead>
+							<tr>
+								<th class="border-right" data-checkbox>
+									<div class="form-check text-center">
+										<input type="checkbox" class="form-check-input" data-checkbox-all>&nbsp;
+									</div>
+								</th>
+								<th class="sort-col text-center"><b>Challenge</b></th>
+								<th class="sort-col text-center"><b>Category</b></th>
+								<th class="sort-col text-center"><b>Value</b></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for challenge in missing %}
+							<tr class="chal-solve"
+								data-href="{{ url_for("admin.challenges_detail", challenge_id=challenge.id) }}">
+								<td class="border-right" data-checkbox>
+									<div class="form-check text-center">
+										<input type="checkbox" class="form-check-input" value="{{ challenge.id }}"
+											data-missing-challenge-id="{{ challenge.id }}"
+											data-missing-challenge-name="{{ challenge.name }}">&nbsp;
+									</div>
+								</td>
+								<td class="text-center chal" id="{{ challenge.id }}">
+									<a href="{{ url_for("admin.challenges_detail", challenge_id=challenge.id) }}">
+										{{ challenge.name }}
+									</a>
+								</td>
+								<td class="text-center">{{ challenge.category }}</td>
+								<td class="text-center">{{ challenge.value }}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -425,20 +440,20 @@
 
 {% block scripts %}
 <script>
-var USER_ID = {{ user.id }};
-var USER_NAME = {{ user.name | tojson }};
-var TEAM_ID = {{ user.team_id | tojson }};
-var stats_data = {{ {
-	'type': 'user',
-	'id': user.id,
-	'name': user.name,
-	'account_id': user.id,
-} | tojson }};
+	var USER_ID = {{ user.id }};
+	var USER_NAME = {{ user.name | tojson }};
+	var TEAM_ID = {{ user.team_id | tojson }};
+	var stats_data = {{ {
+		'type': 'user',
+		'id': user.id,
+		'name': user.name,
+		'account_id': user.id,
+	} | tojson }};
 </script>
 <script defer src="{{ url_for('views.themes', theme='admin', path='js/plotly.bundle.js') }}"></script>
 <script defer src="{{ url_for('views.themes', theme='admin', path='js/graphs.js') }}"></script>
 {% endblock %}
 
 {% block entrypoint %}
-	<script defer src="{{ url_for('views.themes', theme='admin', path='js/pages/user.js') }}"></script>
+<script defer src="{{ url_for('views.themes', theme='admin', path='js/pages/user.js') }}"></script>
 {% endblock %}
