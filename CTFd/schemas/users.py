@@ -22,7 +22,8 @@ class UserSchema(ma.ModelSchema):
         required=True,
         allow_none=False,
         validate=[
-            validate.Length(min=1, max=128, error="User names must not be empty")
+            validate.Length(
+                min=1, max=128, error="User names must not be empty")
         ],
     )
     email = field_for(
@@ -30,7 +31,8 @@ class UserSchema(ma.ModelSchema):
         "email",
         allow_none=False,
         validate=[
-            validate.Email("Emails must be a properly formatted email address"),
+            validate.Email(
+                "Emails must be a properly formatted email address"),
             validate.Length(min=1, max=128, error="Emails must not be empty"),
         ],
     )
@@ -49,6 +51,9 @@ class UserSchema(ma.ModelSchema):
     )
     country = field_for(Users, "country", validate=[validate_country_code])
     password = field_for(Users, "password")
+
+    fname = field_for(Users, "fname")
+    lname = field_for(Users, "lname")
 
     @pre_load
     def validate_name(self, data):
