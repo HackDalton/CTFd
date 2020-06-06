@@ -1,3 +1,60 @@
+2.5.0 / 2020-06-04
+==================
+
+**General**
+* Use a session invalidation strategy inspired by Django. Newly generated user sessions will now include a HMAC of the user's password. When the user's password is changed by someone other than the user the previous HMACs will no longer be valid and the user will be logged out when they next attempt to perform an action.
+* A user and team's place, and score are now cached and invalidated on score changes.
+
+**API**
+* Add `/api/v1/challenges?view=admin` to allow admin users to see all challenges regardless of their visibility state
+* Add `/api/v1/users?view=admin` to allow admin users to see all users regardless of their hidden/banned state
+* Add `/api/v1/teams?view=admin` to allow admin users to see all teams regardless of their hidden/banned state
+* The scoreboard endpoint `/api/v1/scoreboard` is now significantly more performant (20x) due to better response generation
+* The top scoreboard endpoint `/api/v1/scoreboard/top/<count>` is now more performant (3x) due to better response generation
+* The scoreboard endpoint `/api/v1/scoreboard` will no longer show hidden/banned users in a non-hidden team
+
+**Deployment**
+* `docker-compose` now provides a basic nginx configuration and deploys nginx on port 80
+* `Dockerfile` now installs `python3` and `python3-dev` instead of `python` and `python-dev` because Alpine no longer provides those dependencies
+
+**Miscellaneous**
+* The `get_config` and `get_page` config utilities now use SQLAlchemy Core instead of SQLAlchemy ORM for slight speedups
+* The `get_team_standings` and `get_user_standings` functions now return more data (id, oauth_id, name, score for regular users and banned, hidden as well for admins)
+* Update Flask-Migrate to 2.5.3 and regenerate the migration environment. Fixes using `%` signs in database passwords.
+
+
+2.4.3 / 2020-05-24
+==================
+
+**Miscellaneous**
+* Notifications/Events endpoint will now immediately send a ping instead of waiting a few seconds.
+* Upgrade `gunicorn` dependency to `19.10.0`
+* Upgrade `boto3` dependency to `1.13.9`
+* Improve `import_ctf()` reliability by closing all connections before dropping & recreating database
+* Close database session in IP tracking code in failure situations to avoid potential dangling database connections
+* Don't allow backups to be imported if they do not have a `db` folder
+* Change `import_ctf()` process slightly to import built-in tables first and then plugin tables
+* Handle exception where a regex Flag is invalid
+
+**API**
+* File deletion endpoint (`DELETE /api/v1/files/[file_id]`) will now correctly delete the associated file
+
+**Plugins**
+* Add `CTFd.plugins.get_plugin_names()` to get a list of available plugins
+* Add `CTFd.plugins.migrations.current()` to get the current revision of a plugin migration
+* Improve `CTFd.plugins.migrations.upgrade()` to be able to upgrade to a specific plugin migration
+* Run plugin migrations during import process
+
+**Themes**
+* Update jQuery to v3.5.1 to fix mobile hamburger menu
+* Upgrade some dependencies in yarn lockfile
+* Fix invalid team link being generated in `scoreboard.js`
+
+**Admin Panel**
+* Fix sending of user creation notification email
+* Fix button to remove users from teams
+
+
 2.4.2 / 2020-05-08
 ==================
 
